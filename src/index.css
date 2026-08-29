@@ -50,12 +50,12 @@
 }
 
 :root {
-  --bg: #0b0e26;
-  --bg-raise: #131739;
-  --line: rgba(244, 200, 75, 0.16);
-  --ink: #f3f1ea;
-  --ink-2: #b9bad2;
-  --ink-3: #83849f;
+  --bg: #0a0a0a;
+  --bg-raise: #1e1608;
+  --line: rgba(244, 200, 75, 0.22);
+  --ink: #f5edd8;
+  --ink-2: #d6c9a8;
+  --ink-3: #a2946f;
   --gold: #f4c84b;
   --gold-deep: #c98f24;
   --q-red: #ff4d5e;
@@ -63,7 +63,7 @@
   --m-green: #56d68b;
   --r-gold: #f4c84b;
   --t-purple: #c9a0ff;
-  --spine-w: clamp(230px, 32vw, 440px);
+  --trophy-w: min(96vw, 1500px);
   --gutter: clamp(18px, 4vw, 64px);
   --display: 'FWC26 Ultra Condensed', 'Arial Narrow', Impact, sans-serif;
   --body: 'FWC26', 'Helvetica Neue', Arial, sans-serif;

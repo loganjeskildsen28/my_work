@@ -5,10 +5,12 @@ presenting *"Ball is Life? Statistical Analysis of American Cross-Cultural Versu
 Engagement During the 2026 World Cup."*
 
 The site walks through the project as a workflow — **Question → Data → Method → Result →
-Takeaway** — arranged around a World Cup trophy that extends vertically across the entire
-page, with the flags of the five USMNT opponents (Australia, Belgium, Bosnia &
-Herzegovina, Paraguay, Türkiye) and the USA outlining the negative space along the
-trophy's silhouette.
+Takeaway** — with the content set *inside* a World Cup trophy that extends vertically
+across the entire page on a black background. The flags of all 48 qualified nations
+outline the negative space along the trophy's silhouette, with the five USMNT opponents
+(Australia, Belgium, Bosnia & Herzegovina, Paraguay, Türkiye) rendered larger wherever
+they appear. All four figures from the paper are embedded, and Figure 1's three panels
+(country / football / culture pageviews) are toggleable.
 
 Typography is the FWC26 World Cup 26 family (Normal + Ultra Condensed), via the
 [wc26.bogachev.fr](https://wc26.bogachev.fr/) project.
@@ -16,7 +18,8 @@ Typography is the FWC26 World Cup 26 family (Normal + Ultra Condensed), via the
 ## Stack
 
 - React 19 + Vite
-- No other runtime dependencies — the trophy, flags, and charts are hand-built SVG
+- [flag-icons](https://github.com/lipis/flag-icons) for the 48 national flags; the
+  trophy and summary charts are hand-built SVG
 
 ## Develop
 
@@ -29,8 +32,11 @@ npm run preview  # serve the production build
 
 ## Structure
 
-- `src/App.jsx` — page content: hero + the five workflow sections
-- `src/components/TrophySpine.jsx` — full-height trophy silhouette + contour-following flags
-- `src/components/Flags.jsx` — hand-drawn SVG flags
-- `src/components/Charts.jsx` — bar lists and the exponential-decay figure
+- `src/App.jsx` — page content: header, hero + the five workflow sections
+- `src/components/TrophySpine.jsx` — full-height trophy (globe, figure, stem, banded
+  base) + contour-following flags
+- `src/teams.jsx` — the 48 qualified nations and their flags
+- `src/components/Figures.jsx` — embedded paper figures, incl. the Fig. 1 toggle
+- `src/components/Charts.jsx` — bar list and the exponential-decay figure
+- `src/assets/figures/` — figures extracted from the paper PDF
 - `src/fonts/` — FWC26 WOFF2 files
