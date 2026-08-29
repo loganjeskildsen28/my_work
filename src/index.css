@@ -1,0 +1,93 @@
+/* FWC26 — the FIFA World Cup 26 typeface family (via the wc26.bogachev.fr project) */
+@font-face {
+  font-family: 'FWC26';
+  src: url('./fonts/FWC26-NormalThin.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'FWC26';
+  src: url('./fonts/FWC26-NormalRegular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'FWC26';
+  src: url('./fonts/FWC26-NormalMedium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'FWC26';
+  src: url('./fonts/FWC26-NormalBold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'FWC26';
+  src: url('./fonts/FWC26-NormalBlack.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'FWC26 Ultra Condensed';
+  src: url('./fonts/FWC26-UltraCondensedBold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'FWC26 Ultra Condensed';
+  src: url('./fonts/FWC26-UltraCondensedBlack.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg: #0b0e26;
+  --bg-raise: #131739;
+  --line: rgba(244, 200, 75, 0.16);
+  --ink: #f3f1ea;
+  --ink-2: #b9bad2;
+  --ink-3: #83849f;
+  --gold: #f4c84b;
+  --gold-deep: #c98f24;
+  --q-red: #ff4d5e;
+  --d-blue: #4db8ff;
+  --m-green: #56d68b;
+  --r-gold: #f4c84b;
+  --t-purple: #c9a0ff;
+  --spine-w: clamp(230px, 32vw, 440px);
+  --gutter: clamp(18px, 4vw, 64px);
+  --display: 'FWC26 Ultra Condensed', 'Arial Narrow', Impact, sans-serif;
+  --body: 'FWC26', 'Helvetica Neue', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
