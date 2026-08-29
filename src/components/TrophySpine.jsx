@@ -21,22 +21,22 @@ function lerpStations(stations, u) {
 }
 
 const BASE_STATIONS = [
-  [0, 0.24],
-  [0.1, 0.27],
-  [0.17, 0.33],
-  [0.22, 0.3],
-  [0.3, 0.31],
-  [0.53, 0.33],
-  [0.58, 0.365],
-  [0.82, 0.375],
-  [0.88, 0.355],
-  [1, 0.38],
+  [0, 0.295],
+  [0.1, 0.32],
+  [0.17, 0.38],
+  [0.22, 0.35],
+  [0.3, 0.36],
+  [0.53, 0.38],
+  [0.58, 0.41],
+  [0.82, 0.42],
+  [0.88, 0.4],
+  [1, 0.425],
 ]
 
 const SHOULDER_STATIONS = [
   [0, 0.06],
-  [0.45, 0.3],
-  [1, 0.24],
+  [0.45, 0.33],
+  [1, 0.295],
 ]
 
 function geometry(W, H) {
@@ -52,7 +52,7 @@ function geometry(W, H) {
     if (y >= baseTop) return W * lerpStations(BASE_STATIONS, (y - baseTop) / baseH)
     if (y >= topH) {
       const p = (y - topH) / (baseTop - topH)
-      return W * (0.24 - 0.045 * Math.sin(Math.PI * Math.min(p * 1.12, 1)) + 0.006 * Math.sin(6 * Math.PI * p))
+      return W * (0.295 - 0.05 * Math.sin(Math.PI * Math.min(p * 1.12, 1)) + 0.006 * Math.sin(6 * Math.PI * p))
     }
     const circle = R * R - (y - cy) * (y - cy) > 0 ? Math.sqrt(R * R - (y - cy) * (y - cy)) : 0
     const sh = y < shStart ? 0 : W * lerpStations(SHOULDER_STATIONS, (y - shStart) / (topH - shStart))
@@ -250,6 +250,16 @@ export default function TrophySpine() {
               {/* body */}
               <path d={path} fill="url(#gold-v)" />
 
+              {/* far half of the orbit ring — hidden where the globe occludes it */}
+              <path
+                d={`M ${geo.cx - geo.R * 1.28} ${geo.cy} A ${geo.R * 1.28} ${geo.R * 0.38} 0 0 1 ${geo.cx + geo.R * 1.28} ${geo.cy}`}
+                fill="none"
+                stroke="#f4c84b"
+                strokeOpacity="0.16"
+                strokeWidth="2"
+                strokeDasharray="5 9"
+              />
+
               {/* globe */}
               <circle cx={geo.cx} cy={geo.cy} r={geo.R} fill="url(#globe-shade)" />
               <g clipPath="url(#globe-clip)">
@@ -305,17 +315,17 @@ export default function TrophySpine() {
 
                 {/* the figure: raised arms and head beneath the globe */}
                 <path
-                  d={`M${geo.cx - 0.21 * W} ${geo.topH}
-                      C ${geo.cx - 0.26 * W} ${geo.cy + geo.R * 0.9}, ${geo.cx - 0.34 * W} ${geo.cy + geo.R * 0.55}, ${geo.cx - 0.3 * W} ${geo.cy + geo.R * 0.3}
-                      C ${geo.cx - 0.24 * W} ${geo.cy + geo.R * 0.62}, ${geo.cx - 0.16 * W} ${geo.cy + geo.R * 0.86}, ${geo.cx - 0.1 * W} ${geo.topH}
+                  d={`M${geo.cx - 0.26 * W} ${geo.topH}
+                      C ${geo.cx - 0.3 * W} ${geo.cy + geo.R * 0.9}, ${geo.cx - 0.36 * W} ${geo.cy + geo.R * 0.55}, ${geo.cx - 0.32 * W} ${geo.cy + geo.R * 0.3}
+                      C ${geo.cx - 0.26 * W} ${geo.cy + geo.R * 0.62}, ${geo.cx - 0.18 * W} ${geo.cy + geo.R * 0.86}, ${geo.cx - 0.12 * W} ${geo.topH}
                       Z`}
                   fill="#9a7226"
                   opacity="0.75"
                 />
                 <path
-                  d={`M${geo.cx + 0.21 * W} ${geo.topH}
-                      C ${geo.cx + 0.26 * W} ${geo.cy + geo.R * 0.9}, ${geo.cx + 0.34 * W} ${geo.cy + geo.R * 0.55}, ${geo.cx + 0.3 * W} ${geo.cy + geo.R * 0.3}
-                      C ${geo.cx + 0.24 * W} ${geo.cy + geo.R * 0.62}, ${geo.cx + 0.16 * W} ${geo.cy + geo.R * 0.86}, ${geo.cx + 0.1 * W} ${geo.topH}
+                  d={`M${geo.cx + 0.26 * W} ${geo.topH}
+                      C ${geo.cx + 0.3 * W} ${geo.cy + geo.R * 0.9}, ${geo.cx + 0.36 * W} ${geo.cy + geo.R * 0.55}, ${geo.cx + 0.32 * W} ${geo.cy + geo.R * 0.3}
+                      C ${geo.cx + 0.26 * W} ${geo.cy + geo.R * 0.62}, ${geo.cx + 0.18 * W} ${geo.cy + geo.R * 0.86}, ${geo.cx + 0.12 * W} ${geo.topH}
                       Z`}
                   fill="#9a7226"
                   opacity="0.75"
@@ -369,7 +379,34 @@ export default function TrophySpine() {
               </g>
 
               <path d={path} fill="none" stroke="#3c2a0c" strokeOpacity="0.8" strokeWidth="2" />
+
+              {/* near half of the orbit ring, passing in front of the trophy */}
+              <path
+                d={`M ${geo.cx - geo.R * 1.28} ${geo.cy} A ${geo.R * 1.28} ${geo.R * 0.38} 0 0 0 ${geo.cx + geo.R * 1.28} ${geo.cy}`}
+                fill="none"
+                stroke="#f4c84b"
+                strokeOpacity="0.24"
+                strokeWidth="2"
+                strokeDasharray="5 9"
+              />
             </svg>
+
+            {/* faint trail behind the orbiting ball */}
+            {[
+              { d: -17.4, s: 14, o: 0.5 },
+              { d: -16.8, s: 10, o: 0.32 },
+              { d: -16.2, s: 7, o: 0.18 },
+            ].map((g) => (
+              <div
+                key={g.d}
+                className="orbit-ball orbit-ghost"
+                style={{ offsetPath: `path('${orbit}')`, animationDelay: `${g.d}s`, opacity: g.o }}
+              >
+                <span className="orbit-ball-inner" style={{ animationDelay: `${g.d}s` }}>
+                  <span className="orbit-trail-dot" style={{ width: g.s, height: g.s }} />
+                </span>
+              </div>
+            ))}
 
             {/* soccer ball orbiting the globe */}
             <div className="orbit-ball" style={{ offsetPath: `path('${orbit}')` }}>

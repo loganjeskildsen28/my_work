@@ -44,7 +44,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-size: 17px;
+  font-size: 15px;
   white-space: nowrap;
 }
 
@@ -162,7 +162,7 @@
 }
 
 .section-content {
-  width: min(100%, 560px);
+  width: min(100%, 610px);
   background: rgba(10, 7, 2, 0.84);
   border: 1px solid rgba(244, 200, 75, 0.28);
   border-radius: 18px;
@@ -409,10 +409,10 @@
 
 .paperfig {
   margin: 8px 0 22px;
-  background: #fff;
+  background: #faf5e6;
   border-radius: 12px;
   padding: 10px 10px 6px;
-  border: 1px solid rgba(244, 200, 75, 0.35);
+  border: 1px solid rgba(244, 200, 75, 0.45);
 }
 
 .paperfig img {
@@ -614,19 +614,42 @@
   animation: ball-spin 6s linear infinite;
 }
 
+/* shrink with distance, and vanish while passing behind the globe */
 @keyframes orbit-depth {
   0% {
     transform: scale(1);
     opacity: 1;
   }
-  50% {
-    transform: scale(0.62);
-    opacity: 0.85;
+  33% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(0.72);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(0.72);
+    opacity: 0;
+  }
+  67% {
+    transform: scale(0.8);
+    opacity: 1;
   }
   100% {
     transform: scale(1);
     opacity: 1;
   }
+}
+
+.orbit-ghost {
+  filter: none;
+}
+
+.orbit-trail-dot {
+  display: block;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fff3cf, #f4c84b 55%, rgba(244, 200, 75, 0));
 }
 
 @keyframes ball-spin {
@@ -689,6 +712,10 @@
   .orbit-ball-inner,
   .orbit-ball-inner .ball-svg {
     animation: none;
+  }
+
+  .orbit-ghost {
+    display: none;
   }
 
   .reveal,

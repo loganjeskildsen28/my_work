@@ -6,11 +6,11 @@ import { BarList } from './components/Charts'
 import { Fig1Toggle, Fig2, Fig3, Fig4 } from './components/Figures'
 
 const STEPS = [
-  { id: 'question', label: 'Question' },
+  { id: 'question', label: 'Guiding Question' },
   { id: 'data', label: 'Data' },
-  { id: 'method', label: 'Method' },
-  { id: 'result', label: 'Result' },
-  { id: 'takeaway', label: 'Takeaway' },
+  { id: 'method', label: 'Methods of Analysis' },
+  { id: 'result', label: 'Results' },
+  { id: 'takeaway', label: 'Takeaways & Implications' },
 ]
 
 function useReveal() {
@@ -82,25 +82,35 @@ export default function App() {
           </p>
         </section>
 
-        <Section id="question" index={1} accent="var(--q-red)" kicker="The Question"
-          title="Did the World Cup make Americans curious about anyone but the score?">
+        <Section id="question" index={1} accent="var(--acc-gold)" kicker="Guiding Question"
+          title="How effective is the World Cup at creating lasting cultural links?">
           <p>
-            The 2026 World Cup brought 48 nations into the global spotlight, with games on U.S.
-            soil for the first time since 1994. Fans filled 6.8 million seats, 62.8 million people
-            watched the final, more than 9 million turned up to FIFA fan festivals — and America
-            ate roughly 135 kilometers of hot dogs along the way.
+            From a sea of Norwegians rowing in Times Square to thirsty Scots drinking Boston bars
+            dry, the 2026 World Cup brought global competition and culture to the United States
+            for the first time since the 2002 Winter Olympics. Fans engaged with the tournament in
+            staggering numbers, filling 6.8 million seats and averaging 62.8 million viewers
+            during the final match. The FIFA fan festivals saw more than 9 million fans in
+            attendance, the highest since Germany in 2006. Also notably, fans consumed over 135
+            kilometers worth of hot dogs during the cup, a likely cup record.
           </p>
           <p>
-            The cup produced real cross-cultural moments: Lawrence, Kansas hosted the Algerian
-            national team and its high-school marching band learned Algeria&rsquo;s anthem;
-            Spanish players unfurled a <em>&ldquo;¡Gracias Chattanooga!&rdquo;</em> banner for
-            their Tennessee hosts. But in an age of low attention spans and whiplash news cycles,
-            the question this project asks is:
+            The tournament highlighted positive cross-cultural exchanges along the way. The
+            residents of Lawrence, Kansas hosted the Algerian national team, and the high school
+            marching band played the team&rsquo;s national anthem to welcome the players.
+            Slightly further south, Spanish players held a{' '}
+            <em>&ldquo;¡Gracias Chattanooga!&rdquo;</em> banner to thank Tennesseans for their
+            hospitality.
+          </p>
+          <p>
+            There is extensive literature on the cultural and diplomatic benefits of the World
+            Cup at the institutional level, but no accessible study quantifies cultural
+            engagement on an individual level. That gap motivated this project:
           </p>
           <blockquote className="pull">
-            To what extent did Americans engage with the <strong>culture</strong> of the countries
-            the U.S. played — their history, culture, and society — compared to plain interest in
-            the match itself? And did any of that engagement last?
+            In the age of low attention spans and news cycles that give whiplash, how effective is
+            the World Cup at creating lasting cultural links between individuals? Did Americans
+            seek out the <strong>culture</strong> of the countries the U.S. played, or just the
+            match itself?
           </blockquote>
           <div className="stat-grid">
             <div className="stat"><span className="stat-num">48</span><span className="stat-label">nations</span></div>
@@ -110,12 +120,9 @@ export default function App() {
           </div>
         </Section>
 
-        <Section id="data" index={2} accent="var(--d-blue)" kicker="The Data"
-          title="Wikipedia pageviews and Google searches, 33 days before to 33 days after.">
-          <p>
-            Raw engagement data covers <strong>May 17 – August 20, 2026</strong> for every country
-            the U.S. faced in the tournament:
-          </p>
+        <Section id="data" index={2} accent="var(--acc-malachite)" kicker="Data"
+          title="Wikipedia pageviews and Google search trends, May 17 to August 20, 2026.">
+          <p>I studied the five countries the United States faced in the tournament:</p>
           <div className="flag-legend">
             {OPPONENTS.map((t) => (
               <span className="flag-item" key={t.code}>
@@ -124,16 +131,19 @@ export default function App() {
             ))}
           </div>
           <p>
-            <strong>Wikipedia pageviews.</strong> Through the MediaWiki API, daily pageviews were
-            pulled for every article in each opponent&rsquo;s culture, history, and society
-            subcategories, plus the country main page and national football team page —
-            110,164 rows of article-level pageview data in all.
+            <strong>Wikipedia pageviews.</strong> Though Wikipedia may be rife with errors that
+            confound research projects, it is the most popular open source digital library in the
+            world. Through the MediaWiki API, I pulled daily pageviews for every article in each
+            opponent&rsquo;s culture, history, and society subcategories, along with each
+            country&rsquo;s main page and national football team page, from 33 days before the
+            tournament to 33 days after.
           </p>
           <p>
-            <strong>Google Search Trends.</strong> The pytrends library captured the weekly
-            proportion of culture-related searches (<em>{'{country}'} history, {'{country}'}{' '}
-            culture</em>) versus match-related searches (<em>{'{country}'} World Cup,{' '}
-            {'{country}'} soccer</em>) across the eleven U.S. host cities, with Chicago as a
+            <strong>Google Search Trends.</strong> Google Trends does not disclose the quantity
+            of searches, only their proportion over time. Using the pytrends library, I collected
+            the weekly proportion of culture-related searches (<em>{'{country}'} history,{' '}
+            {'{country}'} culture</em>) versus match-related searches (<em>{'{country}'} World
+            Cup, {'{country}'} soccer</em>) for each of the eleven host cities, with Chicago as a
             non-host control.
           </p>
           <div className="datacard-grid">
@@ -143,31 +153,35 @@ export default function App() {
             <div className="datacard"><code>regional_search_interest.csv</code><span>5,088 → 795 rows · host-city search proportions</span></div>
           </div>
           <p className="fineprint">
-            Known limitations: Wikipedia data includes bot and scraper traffic (notably on the
-            first of each month), and the English-language API cannot separate Americans from
-            other English-speaking readers.
+            One caveat: the Wikipedia dataset is limited in its integrity by bot and data-scraper
+            traffic, particularly on the first of each month, and the U.S. played Bosnia and
+            Herzegovina on July 1, a date that coincides with high bot traffic, so that spike
+            could not be removed as an outlier. The English-language API also cannot separate
+            Americans from other English-speaking readers.
           </p>
         </Section>
 
-        <Section id="method" index={3} accent="var(--m-green)" kicker="The Method"
-          title="Scrape, merge, then fit an exponential decay to the curiosity.">
+        <Section id="method" index={3} accent="var(--acc-copper)" kicker="Methods of Analysis"
+          title="Scrape, merge and clean, then fit an exponential decay.">
           <ol className="method-steps">
             <li>
-              <strong>Scrape.</strong> Custom MediaWiki functions walked each country&rsquo;s
-              subcategories, articles, and pageviews; pytrends pulled geo-coded search interest
-              for every host city.
+              <strong>Data scraping.</strong> I wrote functions around the MediaWiki API —{' '}
+              <code>get_wikipedia_subcategories()</code>, <code>get_wikipedia_articles()</code>,
+              and <code>get_wikipedia_pageviews()</code> — to walk each country&rsquo;s
+              subcategories and collect pageviews for every article, and used pytrends to pull
+              geo-coded search interest for each host city.
             </li>
             <li>
-              <strong>Merge &amp; clean.</strong> The ten days before the cup (May 17–26) served
-              as a baseline window. Baseline means and standard deviations were computed per
-              article, then left-joined onto the post-May 26 data so every daily pageview could be
-              expressed as a ratio to its own baseline.
+              <strong>Data merging and cleaning.</strong> The ten days before the cup (May 17–26)
+              served as a baseline window. I computed baseline means and standard deviations per
+              article, then left-joined them onto the post-May 26 data so that every daily
+              pageview could be expressed as a ratio to its own baseline.
             </li>
             <li>
-              <strong>Fit &amp; analyze.</strong> SciPy fit each country&rsquo;s engagement ratio
-              to an exponential decay, excess views were decomposed by subcategory with propagated
-              errors, and search proportions were log-scaled with <code>np.log1p</code> to compare
-              cultural against match interest city by city.
+              <strong>Curve fitting and statistical analysis.</strong> I used SciPy to fit each
+              country&rsquo;s engagement ratio to an exponential decay, decomposed excess views by
+              subcategory with propagated errors, and log-scaled the search proportions with{' '}
+              <code>np.log1p</code> to compare cultural against match interest city by city.
             </li>
           </ol>
           <div className="formula">
@@ -179,99 +193,119 @@ export default function App() {
           </div>
         </Section>
 
-        <Section id="result" index={4} accent="var(--r-gold)" kicker="The Result — I of IV"
-          title="Curiosity spiked up to 51× baseline — and was gone within a day.">
+        <Section id="result" index={4} accent="var(--acc-gold)" kicker="Results — I of III"
+          title="Pageviews spiked up to 51.5 times above baseline, then decayed within a day.">
           <p>
-            Every matchup sent Americans to their opponent&rsquo;s Wikipedia pages. Main-page
-            views rose 1.9× to 51.5× above baseline, with an inverse relationship between how
-            familiar a country is and how hard its pages spiked: well-known Australia barely moved
-            while Paraguay and Bosnia &amp; Herzegovina soared.
+            Every U.S. matchup sent Americans to their opponent&rsquo;s Wikipedia pages. Views of
+            each country&rsquo;s main page rose between 1.9 and 51.5 times above the baseline
+            mean, and there was an inverse relationship between country size and engagement.
+            Larger, well-known countries like Australia and Turkey incurred smaller deviations
+            (1.9μ and 4.9μ), whereas lesser-known Paraguay and Bosnia and Herzegovina had far
+            more drastic ones (33.8μ and 51.5μ). National football team pages skyrocketed with a
+            mean deviation of 25.9μ, while the culture subcategories rose a consistently mellow
+            3.3μ. Americans clearly prioritized background information on their opponents,
+            especially the lesser-known nations.
           </p>
           <BarList
             title="Peak country-page views, ratio to baseline"
-            color="var(--r-gold)"
+            color="var(--acc-gold)"
             unit="×"
             items={[
-              { label: 'Paraguay', value: 51.5 },
-              { label: 'Bosnia & Herz.', value: 33.8 },
+              { label: 'Bosnia & Herz.', value: 51.5 },
+              { label: 'Paraguay', value: 33.8 },
               { label: 'Türkiye', value: 4.9 },
               { label: 'Australia', value: 1.9 },
             ]}
           />
           <p>
-            But the interest decayed almost immediately. The marginal half-life of engagement fell
-            below half a day for every country except Australia — β<sub>match</sub> = 0.379 d and
-            β<sub>culture</sub> = 0.276 d, a difference (Δβ = 0.103 ± 0.14 d) with no statistical
-            significance. Cultural curiosity died just as fast as match curiosity.
+            The curiosity was short-lived. With the exception of Australia, the marginal
+            half-life of engagement fell below half a day for every category. Football pageviews
+            averaged β<sub>match</sub> = 0.379 ± 0.07 d and cultural pageviews β
+            <sub>culture</sub> = 0.276 ± 0.18 d; their difference, Δβ = 0.103 ± 0.14 d, is not
+            statistically significant. The World Cup generated a sharp spike in cross-country
+            engagement, but not a cultural engagement that outlasted match curiosity.
           </p>
           <Fig1Toggle />
         </Section>
 
-        <Section id="result-2" index={4} accent="var(--r-gold)" kicker="The Result — II of IV"
-          title="History for the unfamiliar, culture for the familiar.">
+        <Section id="result-2" index={4} accent="var(--acc-gold)" kicker="Results — II of III"
+          title="Americans read the histories of unfamiliar countries and the quirks of familiar ones.">
           <p>
-            What Americans read while the curiosity lasted is telling. Excess pageviews for the
-            lesser-known countries concentrated in <strong>history</strong> — Bosnia &amp;
-            Herzegovina (78.8%), Türkiye (73.3%), and Paraguay (58.8%) — while the well-known
-            countries drew readers into <strong>culture</strong>: Australia (91.9%) and Belgium
-            (37.4%). Americans briefed themselves on unfamiliar nations but felt comfortable
-            enough to browse the culture of countries they already knew.
+            The cultural spike, though smaller, deserved a closer look at what types of culture
+            Americans were intentionally seeking out. Distributing each country&rsquo;s excess
+            pageviews across its culture, history, and society subcategories shows that Americans
+            engaged most with the <strong>culture</strong> of Australia (91.9%) and Belgium
+            (37.4%), but with the <strong>history</strong> of Bosnia and Herzegovina (78.8%),
+            Turkey (73.3%), and Paraguay (58.8%). Americans educated themselves on the
+            lesser-known countries&rsquo; histories while feeling comfortable enough to explore
+            the culture of countries they already knew.
           </p>
           <Fig2 />
-        </Section>
-
-        <Section id="result-3" index={4} accent="var(--r-gold)" kicker="The Result — III of IV"
-          title="The standouts: a lot of history, Vegemite, and Manneken Pis.">
           <p>
-            The single articles with the largest share of each country&rsquo;s excess views repeat
-            the pattern: History of Bosnia and Herzegovina (73.5%), History of Paraguay (58.9%),
-            and Name of Turkey (46.8%) for the less familiar opponents — versus the quirky
-            cultural picks for the familiar ones: Vegemite (63.5%) for Australia and Manneken Pis
-            (23.4%) for Belgium.
+            The single articles with the largest share of each country&rsquo;s excess views
+            repeat the pattern. The less familiar countries correlated with historical articles —
+            History of Bosnia and Herzegovina (73.5%), History of Paraguay (58.9%), Name of
+            Turkey (46.8%) — whereas the more familiar countries produced quirkier cultural
+            results: Vegemite (63.5%) and Manneken Pis (23.4%).
           </p>
           <Fig3 />
         </Section>
 
-        <Section id="result-4" index={4} accent="var(--r-gold)" kicker="The Result — IV of IV"
-          title="Host cities with immigrant communities kept searching.">
+        <Section id="result-3" index={4} accent="var(--acc-gold)" kicker="Results — III of III"
+          title="Match interest died with the tournament; cultural interest lingered in immigrant hubs.">
           <p>
-            Host-city Google searches largely mirrored the Wikipedia data (r ≈ 0.86). After the
-            cup, match searches waned to zero everywhere — but residual <strong>cultural</strong>{' '}
-            searches persisted into August in Los Angeles, New York, Miami, Houston, and Seattle,
-            and the host cities among the nation&rsquo;s five largest immigrant populations led
-            that persistence.
+            Google Trends data from the host cities largely corroborated the Wikipedia pageviews
+            (r ≈ 0.86). During the tournament window, match and cultural interest peaked
+            together. Afterward, most match interest waned to zero, whereas residual cultural
+            engagement in Los Angeles, New York, Miami, Houston, Chicago, and Seattle persisted
+            into August. The five host cities on that list also correspond to the American cities
+            with the five highest immigrant populations. Host cities did not sustain more
+            cultural searching than the control overall, but there is an auxiliary correlation
+            between immigrant population and curiosity about other cultures.
           </p>
           <Fig4 />
         </Section>
 
-        <Section id="takeaway" index={5} accent="var(--t-purple)" kicker="The Takeaway"
-          title="A sharp, transient boost — except where immigrant communities kept it alive.">
+        <Section id="takeaway" index={5} accent="var(--acc-champagne)" kicker="Takeaways & Implications"
+          title="A sharp, transient boost, with hints of something slower-growing.">
           <ul className="takeaway-list">
             <li>
-              The World Cup genuinely inspired Americans to look up other nations — up to 50×
-              normal interest — but that curiosity was confined to the day of and the day after
-              the match.
+              The World Cup generated a sharp, transient boost in American engagement with other
+              countries and cultures. Engagement increased up to 50 times above baseline near the
+              match date but exponentially decayed back to baseline within a day.
             </li>
             <li>
-              Americans gave themselves background briefings on unfamiliar opponents (History of
-              Bosnia, History of Paraguay) while indulging in cultural quirks of familiar ones
-              (Vegemite, Manneken Pis).
+              Americans used that spike differently depending on the opponent: they interacted
+              with the history of lesser-known countries to develop a better background, and
+              pursued cultural information on well-known ones.
             </li>
             <li>
-              Sustained cross-cultural engagement showed up in exactly one place: host cities with
-              the highest immigrant populations, where cultural searches were still elevated a
-              month after the tournament.
-            </li>
-            <li>
-              Prior work suggests the World Cup lodges in memory like a major historical event —
-              revisiting these methods in five years could reveal whether 2026 planted
-              slower-growing cultural links than a one-day pageview window can see.
+              Match-related searches dominated during the tournament itself, but cultural
+              information kept being pursued afterward in the host cities with the highest
+              immigrant populations.
             </li>
           </ul>
+          <blockquote className="pull">
+            The pattern closely resembles other social media trends of the 2020s, most clearly
+            Blackout Tuesday. In June 2020, millions of users posted black squares in a single
+            day; that engagement collapsed just as quickly as the match-day curiosity measured
+            here. Yet the moment left a drawn-out mark — over the following six years, consumers
+            engaged less with the corporations that stayed silent that day. A one-day spike, in
+            other words, can still shape behavior on a scale of years. Perhaps the same drawn-out
+            engagement will be observed for this World Cup.
+          </blockquote>
+          <p>
+            That possibility is also this study&rsquo;s main limitation. Previous work has shown
+            that the World Cup induces memory in a similar way to a war or other major historical
+            event, and a 33-day window cannot capture effects on that timescale. It may prove
+            useful to revisit these same methods in five years to test whether the 2026 World Cup
+            produced a steady, slow increase in cultural engagement that this window could not
+            see.
+          </p>
           <p className="fineprint">
-            Acknowledgments: Professor Chang for two consultation sessions introducing the
-            regression coefficient–style plots, and the MediaWiki and Google Trends APIs for their
-            publicly accessible data.
+            Acknowledgments: thank you to Professor Chang for two consultation sessions during
+            the week of 8/18, which introduced the regression coefficient style plot used here,
+            and to the MediaWiki and Google Trends APIs for their publicly accessible databases.
           </p>
         </Section>
 

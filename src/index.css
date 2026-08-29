@@ -58,11 +58,11 @@
   --ink-3: #a2946f;
   --gold: #f4c84b;
   --gold-deep: #c98f24;
-  --q-red: #ff4d5e;
-  --d-blue: #4db8ff;
-  --m-green: #56d68b;
-  --r-gold: #f4c84b;
-  --t-purple: #c9a0ff;
+  /* accents drawn from the trophy itself: gold, malachite, copper, champagne */
+  --acc-gold: #f4c84b;
+  --acc-malachite: #45b57c;
+  --acc-copper: #d98d4a;
+  --acc-champagne: #ead9a8;
   --trophy-w: min(96vw, 1500px);
   --gutter: clamp(18px, 4vw, 64px);
   --display: 'FWC26 Ultra Condensed', 'Arial Narrow', Impact, sans-serif;
