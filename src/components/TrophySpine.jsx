@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { TEAMS } from '../teams.jsx'
 
 // Trophy modeled on the FIFA World Cup: a round globe held aloft, a draped
-// stem, and a stepped base with dark engraved bands. The globe and base keep
+// stem, and a stepped base with malachite bands. The globe and base keep
 // their true proportions (sized from the trophy width); only the stem
 // stretches so the trophy spans the full height of the site.
 
@@ -92,8 +92,10 @@ const CONTINENTS = [
   [0.62, 0.18, 0.06, 0.05, 0],
 ]
 
+// Flags trace the outline continuously from the globe down to the foot of the
+// base. All 48 nations cycle through; the five opponents render larger.
 function edgeFlags(geo, W, H) {
-  const count = Math.max(12, Math.min(44, Math.round(H / 240)))
+  const count = Math.max(18, Math.min(80, Math.round(H / 150)))
   const baseW = Math.max(24, Math.min(38, W * 0.03))
   const flags = []
   const t0 = 0.012
@@ -112,6 +114,49 @@ function edgeFlags(geo, W, H) {
     flags.push({ key: `l${i}`, team: teamL, w: wL, x: geo.cx - hw - 10 - wL / 2, y, angle: -angle })
   }
   return flags
+}
+
+function pentagon(cx, cy, r, rot = -90) {
+  const pts = []
+  for (let i = 0; i < 5; i++) {
+    const a = ((rot + i * 72) * Math.PI) / 180
+    pts.push(`${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`)
+  }
+  return pts.join(' ')
+}
+
+function SoccerBall({ size }) {
+  return (
+    <svg viewBox="0 0 100 100" width={size} height={size} className="ball-svg">
+      <defs>
+        <radialGradient id="ball-shade" cx="0.35" cy="0.3" r="0.9">
+          <stop offset="0" stopColor="#ffffff" />
+          <stop offset="0.6" stopColor="#e8e8e8" />
+          <stop offset="1" stopColor="#9a9a9a" />
+        </radialGradient>
+        <clipPath id="ball-clip">
+          <circle cx="50" cy="50" r="47" />
+        </clipPath>
+      </defs>
+      <circle cx="50" cy="50" r="47" fill="url(#ball-shade)" stroke="#333" strokeWidth="2" />
+      <g clipPath="url(#ball-clip)" fill="#1c1c1c">
+        <polygon points={pentagon(50, 44, 15)} />
+        <polygon points={pentagon(14, 26, 13, -70)} />
+        <polygon points={pentagon(86, 26, 13, -110)} />
+        <polygon points={pentagon(8, 72, 13, -90)} />
+        <polygon points={pentagon(92, 72, 13, -90)} />
+        <polygon points={pentagon(50, 102, 15, -90)} />
+        <g stroke="#1c1c1c" strokeWidth="2.4" fill="none">
+          <path d="M50 29 L50 12" />
+          <path d="M36 48 L20 36" />
+          <path d="M64 48 L80 36" />
+          <path d="M41 57 L20 63" />
+          <path d="M59 57 L80 63" />
+          <path d="M50 59 L50 87" />
+        </g>
+      </g>
+    </svg>
+  )
 }
 
 export default function TrophySpine() {
@@ -135,6 +180,16 @@ export default function TrophySpine() {
   const path = ready ? silhouettePath(geo, W, H) : ''
   const flags = ready ? edgeFlags(geo, W, H) : []
 
+  const ballSize = ready ? Math.max(38, Math.min(90, W * 0.065)) : 0
+  const orbit = ready
+    ? (() => {
+        const rx = geo.R * 1.28
+        const ry = geo.R * 0.38
+        // start at the front (bottom) of the ellipse so 50% of the cycle is the far side
+        return `M ${geo.cx} ${geo.cy + ry} A ${rx} ${ry} 0 1 1 ${geo.cx} ${geo.cy - ry} A ${rx} ${ry} 0 1 1 ${geo.cx} ${geo.cy + ry} Z`
+      })()
+    : ''
+
   return (
     <div className="trophy-spine" aria-hidden="true">
       <div className="trophy-spine-inner" ref={ref}>
@@ -156,17 +211,34 @@ export default function TrophySpine() {
                   <stop offset="0.78" stopColor="#1a1002" stopOpacity="0.35" />
                   <stop offset="1" stopColor="#0d0801" stopOpacity="0.6" />
                 </linearGradient>
-                <radialGradient id="globe-shade" cx="0.38" cy="0.32" r="0.85">
-                  <stop offset="0" stopColor="#f2d488" />
-                  <stop offset="0.55" stopColor="#c99a3f" />
-                  <stop offset="0.85" stopColor="#96702a" />
-                  <stop offset="1" stopColor="#6b4a16" />
-                </radialGradient>
-                <linearGradient id="band-dark" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stopColor="#100a02" />
-                  <stop offset="0.5" stopColor="#2c1d08" />
-                  <stop offset="1" stopColor="#0c0701" />
+                {/* fluted drapery shading down the stem */}
+                <linearGradient id="flutes" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stopColor="#000" stopOpacity="0.3" />
+                  <stop offset="0.12" stopColor="#fff" stopOpacity="0.08" />
+                  <stop offset="0.24" stopColor="#000" stopOpacity="0.22" />
+                  <stop offset="0.38" stopColor="#fff" stopOpacity="0.1" />
+                  <stop offset="0.5" stopColor="#000" stopOpacity="0.12" />
+                  <stop offset="0.62" stopColor="#fff" stopOpacity="0.1" />
+                  <stop offset="0.76" stopColor="#000" stopOpacity="0.22" />
+                  <stop offset="0.88" stopColor="#fff" stopOpacity="0.06" />
+                  <stop offset="1" stopColor="#000" stopOpacity="0.32" />
                 </linearGradient>
+                <radialGradient id="globe-shade" cx="0.36" cy="0.3" r="0.9">
+                  <stop offset="0" stopColor="#f6dd96" />
+                  <stop offset="0.45" stopColor="#d3a747" />
+                  <stop offset="0.78" stopColor="#a87c2e" />
+                  <stop offset="0.95" stopColor="#7a5417" />
+                  <stop offset="1" stopColor="#5f400f" />
+                </radialGradient>
+                <linearGradient id="malachite" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stopColor="#0a2a1b" />
+                  <stop offset="0.35" stopColor="#17573a" />
+                  <stop offset="0.6" stopColor="#0f3d28" />
+                  <stop offset="1" stopColor="#071e13" />
+                </linearGradient>
+                <filter id="soft-blur" x="-40%" y="-40%" width="180%" height="180%">
+                  <feGaussianBlur stdDeviation={geo.R * 0.045} />
+                </filter>
                 <clipPath id="trophy-clip">
                   <path d={path} />
                 </clipPath>
@@ -191,13 +263,46 @@ export default function TrophySpine() {
                     transform={`rotate(${rot} ${geo.cx + x * geo.R} ${geo.cy + y * geo.R})`}
                     fill="#7c5a1a"
                     opacity="0.38"
+                    stroke="#5f4410"
+                    strokeOpacity="0.4"
+                    strokeWidth={geo.R * 0.012}
                   />
                 ))}
-                {/* sphere edge shading */}
-                <circle cx={geo.cx} cy={geo.cy} r={geo.R} fill="none" stroke="#503409" strokeOpacity="0.5" strokeWidth={geo.R * 0.06} />
+                {/* specular highlight and reflected light */}
+                <ellipse
+                  cx={geo.cx - geo.R * 0.34}
+                  cy={geo.cy - geo.R * 0.44}
+                  rx={geo.R * 0.3}
+                  ry={geo.R * 0.16}
+                  transform={`rotate(-28 ${geo.cx - geo.R * 0.34} ${geo.cy - geo.R * 0.44})`}
+                  fill="#fff6d8"
+                  opacity="0.4"
+                  filter="url(#soft-blur)"
+                />
+                <ellipse
+                  cx={geo.cx + geo.R * 0.2}
+                  cy={geo.cy + geo.R * 0.82}
+                  rx={geo.R * 0.5}
+                  ry={geo.R * 0.14}
+                  fill="#f2d488"
+                  opacity="0.14"
+                  filter="url(#soft-blur)"
+                />
+                <circle cx={geo.cx} cy={geo.cy} r={geo.R} fill="none" stroke="#503409" strokeOpacity="0.55" strokeWidth={geo.R * 0.05} />
               </g>
 
               <g clipPath="url(#trophy-clip)">
+                {/* shadow cast by the globe onto the shoulders */}
+                <ellipse
+                  cx={geo.cx}
+                  cy={geo.cy + geo.R * 1.04}
+                  rx={geo.R * 0.52}
+                  ry={geo.R * 0.09}
+                  fill="#2a1a04"
+                  opacity="0.4"
+                  filter="url(#soft-blur)"
+                />
+
                 {/* the figure: raised arms and head beneath the globe */}
                 <path
                   d={`M${geo.cx - 0.21 * W} ${geo.topH}
@@ -218,8 +323,9 @@ export default function TrophySpine() {
                 <circle cx={geo.cx} cy={geo.cy + geo.R * 0.94} r={0.075 * W} fill="#b5893a" />
                 <circle cx={geo.cx - 0.02 * W} cy={geo.cy + geo.R * 0.9} r={0.05 * W} fill="#d3ab5c" opacity="0.5" />
 
-                {/* drapery folds down the stem */}
-                {[-0.1, 0, 0.1].map((dx, i) => (
+                {/* fluted shading + fold lines down the stem */}
+                <rect x="0" y={geo.topH} width={W} height={geo.baseTop - geo.topH} fill="url(#flutes)" opacity="0.55" />
+                {[-0.13, -0.05, 0.04, 0.12].map((dx, i) => (
                   <path
                     key={i}
                     d={`M${geo.cx + dx * W} ${geo.topH + 10}
@@ -227,22 +333,26 @@ export default function TrophySpine() {
                           ${geo.cx + (dx + 0.03) * W} ${geo.topH + (geo.baseTop - geo.topH) * 0.7},
                           ${geo.cx + dx * 0.6 * W} ${geo.baseTop}`}
                     stroke="#7c5a1a"
-                    strokeOpacity="0.45"
+                    strokeOpacity="0.4"
                     strokeWidth="2.5"
                     fill="none"
                     vectorEffect="non-scaling-stroke"
                   />
                 ))}
 
-                {/* base rings */}
+                {/* base: rim, malachite bands with gold separators, plinth */}
                 <rect x="0" y={geo.baseTop + geo.baseH * 0.17} width={W} height={geo.baseH * 0.045} fill="#efd189" opacity="0.7" />
-                <rect x="0" y={geo.baseTop + geo.baseH * 0.28} width={W} height={geo.baseH * 0.15} fill="url(#band-dark)" />
-                <rect x="0" y={geo.baseTop + geo.baseH * 0.5} width={W} height={geo.baseH * 0.17} fill="url(#band-dark)" />
+                <rect x="0" y={geo.baseTop + geo.baseH * 0.275} width={W} height={geo.baseH * 0.006} fill="#f2d488" opacity="0.6" />
+                <rect x="0" y={geo.baseTop + geo.baseH * 0.28} width={W} height={geo.baseH * 0.15} fill="url(#malachite)" />
+                <rect x="0" y={geo.baseTop + geo.baseH * 0.43} width={W} height={geo.baseH * 0.006} fill="#f2d488" opacity="0.6" />
+                <rect x="0" y={geo.baseTop + geo.baseH * 0.495} width={W} height={geo.baseH * 0.006} fill="#f2d488" opacity="0.6" />
+                <rect x="0" y={geo.baseTop + geo.baseH * 0.5} width={W} height={geo.baseH * 0.17} fill="url(#malachite)" />
+                <rect x="0" y={geo.baseTop + geo.baseH * 0.67} width={W} height={geo.baseH * 0.006} fill="#f2d488" opacity="0.6" />
                 <text
                   x={geo.cx}
                   y={geo.baseTop + geo.baseH * 0.615}
                   textAnchor="middle"
-                  fill="#caa14e"
+                  fill="#d8b45c"
                   style={{
                     font: `700 ${Math.max(14, geo.baseH * 0.085)}px 'FWC26 Ultra Condensed', sans-serif`,
                     letterSpacing: '0.35em',
@@ -251,6 +361,8 @@ export default function TrophySpine() {
                   FIFA WORLD CUP
                 </text>
                 <rect x="0" y={geo.baseTop + geo.baseH * 0.86} width={W} height={geo.baseH * 0.02} fill="#efd189" opacity="0.5" />
+                {/* grounding shadow at the very foot */}
+                <rect x="0" y={H - geo.baseH * 0.06} width={W} height={geo.baseH * 0.06} fill="#000" opacity="0.35" />
 
                 {/* global sheen */}
                 <path d={path} fill="url(#gold-sheen)" />
@@ -258,6 +370,13 @@ export default function TrophySpine() {
 
               <path d={path} fill="none" stroke="#3c2a0c" strokeOpacity="0.8" strokeWidth="2" />
             </svg>
+
+            {/* soccer ball orbiting the globe */}
+            <div className="orbit-ball" style={{ offsetPath: `path('${orbit}')` }}>
+              <span className="orbit-ball-inner">
+                <SoccerBall size={ballSize} />
+              </span>
+            </div>
 
             {flags.map((f) => (
               <div
@@ -269,7 +388,7 @@ export default function TrophySpine() {
                   transform: `translate(-50%, -50%) rotate(${f.angle}deg)`,
                 }}
               >
-                <img src={f.team.flag} alt="" width={f.w} height={f.w * 0.75} loading="lazy" />
+                <img src={f.team.flag} alt="" width={f.w} height={f.w * 0.75} />
               </div>
             ))}
           </>

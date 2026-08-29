@@ -1,7 +1,8 @@
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import TrophySpine from './components/TrophySpine'
 import { OPPONENTS, TeamFlag } from './teams.jsx'
-import { BarList, DecayCurve } from './components/Charts'
+import { BarList } from './components/Charts'
 import { Fig1Toggle, Fig2, Fig3, Fig4 } from './components/Figures'
 
 const STEPS = [
@@ -12,10 +13,36 @@ const STEPS = [
   { id: 'takeaway', label: 'Takeaway' },
 ]
 
+function useReveal() {
+  const ref = useRef(null)
+  const [visible, setVisible] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    if (!('IntersectionObserver' in window)) {
+      setVisible(true)
+      return
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          io.disconnect()
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -6% 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  return [ref, visible]
+}
+
 function Section({ id, index, accent, kicker, title, children }) {
+  const [ref, visible] = useReveal()
   return (
     <section id={id} className="section" style={{ '--accent': accent }}>
-      <div className="section-content">
+      <div ref={ref} className={`section-content reveal${visible ? ' is-visible' : ''}`}>
         <p className="kicker">
           <span className="kicker-num">{String(index).padStart(2, '0')}</span> {kicker}
         </p>
@@ -150,10 +177,9 @@ export default function App() {
               β = ln 2 ⁄ λ, the marginal half-life of engagement
             </span>
           </div>
-          <DecayCurve />
         </Section>
 
-        <Section id="result" index={4} accent="var(--r-gold)" kicker="The Result"
+        <Section id="result" index={4} accent="var(--r-gold)" kicker="The Result — I of IV"
           title="Curiosity spiked up to 51× baseline — and was gone within a day.">
           <p>
             Every matchup sent Americans to their opponent&rsquo;s Wikipedia pages. Main-page
@@ -172,26 +198,48 @@ export default function App() {
               { label: 'Australia', value: 1.9 },
             ]}
           />
-          <Fig1Toggle />
           <p>
             But the interest decayed almost immediately. The marginal half-life of engagement fell
             below half a day for every country except Australia — β<sub>match</sub> = 0.379 d and
             β<sub>culture</sub> = 0.276 d, a difference (Δβ = 0.103 ± 0.14 d) with no statistical
             significance. Cultural curiosity died just as fast as match curiosity.
           </p>
+          <Fig1Toggle />
+        </Section>
+
+        <Section id="result-2" index={4} accent="var(--r-gold)" kicker="The Result — II of IV"
+          title="History for the unfamiliar, culture for the familiar.">
           <p>
-            What Americans read while it lasted is telling: they studied the{' '}
-            <strong>history</strong> of lesser-known countries and the <strong>quirky culture</strong>{' '}
-            of familiar ones.
+            What Americans read while the curiosity lasted is telling. Excess pageviews for the
+            lesser-known countries concentrated in <strong>history</strong> — Bosnia &amp;
+            Herzegovina (78.8%), Türkiye (73.3%), and Paraguay (58.8%) — while the well-known
+            countries drew readers into <strong>culture</strong>: Australia (91.9%) and Belgium
+            (37.4%). Americans briefed themselves on unfamiliar nations but felt comfortable
+            enough to browse the culture of countries they already knew.
           </p>
           <Fig2 />
-          <Fig3 />
+        </Section>
+
+        <Section id="result-3" index={4} accent="var(--r-gold)" kicker="The Result — III of IV"
+          title="The standouts: a lot of history, Vegemite, and Manneken Pis.">
           <p>
-            Host-city Google searches told the same story (r ≈ 0.86 with the Wikipedia data) —
-            with one exception. After the cup, match searches waned to zero everywhere, but
-            residual <strong>cultural</strong> searches persisted into August in Los Angeles, New
-            York, Miami, Houston, and Seattle — and the host cities among the nation&rsquo;s five
-            largest immigrant populations led that persistence.
+            The single articles with the largest share of each country&rsquo;s excess views repeat
+            the pattern: History of Bosnia and Herzegovina (73.5%), History of Paraguay (58.9%),
+            and Name of Turkey (46.8%) for the less familiar opponents — versus the quirky
+            cultural picks for the familiar ones: Vegemite (63.5%) for Australia and Manneken Pis
+            (23.4%) for Belgium.
+          </p>
+          <Fig3 />
+        </Section>
+
+        <Section id="result-4" index={4} accent="var(--r-gold)" kicker="The Result — IV of IV"
+          title="Host cities with immigrant communities kept searching.">
+          <p>
+            Host-city Google searches largely mirrored the Wikipedia data (r ≈ 0.86). After the
+            cup, match searches waned to zero everywhere — but residual <strong>cultural</strong>{' '}
+            searches persisted into August in Los Angeles, New York, Miami, Houston, and Seattle,
+            and the host cities among the nation&rsquo;s five largest immigrant populations led
+            that persistence.
           </p>
           <Fig4 />
         </Section>

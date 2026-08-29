@@ -14,7 +14,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 10px clamp(16px, 3vw, 44px);
+  padding: 15px clamp(16px, 3vw, 44px);
   background: rgba(8, 8, 8, 0.92);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid rgba(244, 200, 75, 0.35);
@@ -25,7 +25,7 @@
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-size: clamp(20px, 2vw, 28px);
+  font-size: clamp(24px, 2.5vw, 36px);
   color: var(--gold);
   white-space: nowrap;
 }
@@ -44,7 +44,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-size: 14px;
+  font-size: 17px;
   white-space: nowrap;
 }
 
@@ -57,7 +57,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  font-size: clamp(14px, 1.4vw, 18px);
+  font-size: clamp(17px, 1.7vw, 22px);
   color: var(--gold);
   white-space: nowrap;
 }
@@ -405,37 +405,6 @@
   white-space: nowrap;
 }
 
-.decayfig {
-  margin: 8px 0 6px;
-  border: 1px solid var(--line);
-  background: rgba(40, 28, 8, 0.55);
-  border-radius: 12px;
-  padding: 14px 16px 10px;
-  color: var(--m-green);
-}
-
-.decayfig svg {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.decayfig .barlist-title {
-  margin: 8px 0 4px;
-}
-
-.chart-tick {
-  font-family: var(--body);
-  font-size: 11px;
-  fill: var(--ink-3);
-}
-
-.chart-note {
-  font-family: var(--body);
-  font-size: 12px;
-  fill: var(--ink);
-}
-
 /* embedded paper figures */
 
 .paperfig {
@@ -555,6 +524,120 @@
   color: var(--gold);
 }
 
+/* ---------- animations ---------- */
+
+@keyframes fadeup {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-kicker,
+.hero-title,
+.hero-sub {
+  animation: fadeup 0.9s ease both;
+}
+
+.hero-title {
+  animation-delay: 0.15s;
+}
+
+.hero-sub {
+  animation-delay: 0.35s;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal .barlist-bar {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.9s cubic-bezier(0.22, 0.8, 0.3, 1) 0.25s;
+}
+
+.reveal.is-visible .barlist-bar {
+  transform: scaleX(1);
+}
+
+.reveal .stat-num {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+}
+
+.reveal.is-visible .stat-num {
+  opacity: 1;
+  transform: none;
+}
+
+/* soccer ball orbiting the globe */
+
+.orbit-ball {
+  position: absolute;
+  left: 0;
+  top: 0;
+  offset-rotate: 0deg;
+  animation: orbit 18s linear infinite;
+  will-change: transform;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+}
+
+@keyframes orbit {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
+.orbit-ball-inner {
+  display: block;
+  animation: orbit-depth 18s linear infinite;
+}
+
+.orbit-ball-inner .ball-svg {
+  display: block;
+  animation: ball-spin 6s linear infinite;
+}
+
+@keyframes orbit-depth {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.62);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes ball-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* ---------- responsive ---------- */
 
 @media (max-width: 760px) {
@@ -597,5 +680,22 @@
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .hero-kicker,
+  .hero-title,
+  .hero-sub,
+  .orbit-ball,
+  .orbit-ball-inner,
+  .orbit-ball-inner .ball-svg {
+    animation: none;
+  }
+
+  .reveal,
+  .reveal .barlist-bar,
+  .reveal .stat-num {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

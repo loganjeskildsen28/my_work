@@ -9,8 +9,11 @@ Takeaway** — with the content set *inside* a World Cup trophy that extends ver
 across the entire page on a black background. The flags of all 48 qualified nations
 outline the negative space along the trophy's silhouette, with the five USMNT opponents
 (Australia, Belgium, Bosnia & Herzegovina, Paraguay, Türkiye) rendered larger wherever
-they appear. All four figures from the paper are embedded, and Figure 1's three panels
-(country / football / culture pageviews) are toggleable.
+they appear. All four figures from the paper are embedded — the Result is split into
+four sections, one per figure — and Figure 1's three panels (country / football /
+culture pageviews) are toggleable. A soccer ball orbits the globe at the head of the
+trophy, and each section reveals with a scroll animation (disabled under
+`prefers-reduced-motion`).
 
 Typography is the FWC26 World Cup 26 family (Normal + Ultra Condensed), via the
 [wc26.bogachev.fr](https://wc26.bogachev.fr/) project.
