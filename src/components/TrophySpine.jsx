@@ -361,16 +361,6 @@ export default function TrophySpine() {
                   opacity="0.14"
                   filter="url(#soft-blur)"
                 />
-                {/* graticule: faint latitude and meridian lines */}
-                <g stroke="#6d4c12" strokeOpacity="0.35" fill="none" strokeWidth={geo.R * 0.014}>
-                  {[-0.55, -0.2, 0.15, 0.5].map((f) => {
-                    const chord = Math.sqrt(1 - f * f) * geo.R
-                    const y = geo.cy + f * geo.R
-                    return <path key={f} d={`M ${geo.cx - chord} ${y} Q ${geo.cx} ${y + 0.13 * geo.R} ${geo.cx + chord} ${y}`} />
-                  })}
-                  <path d={`M ${geo.cx} ${geo.cy - geo.R} Q ${geo.cx - 0.5 * geo.R} ${geo.cy} ${geo.cx} ${geo.cy + geo.R}`} />
-                  <path d={`M ${geo.cx} ${geo.cy - geo.R} Q ${geo.cx + 0.5 * geo.R} ${geo.cy} ${geo.cx} ${geo.cy + geo.R}`} />
-                </g>
                 <circle cx={geo.cx} cy={geo.cy} r={geo.R} fill="none" stroke="#503409" strokeOpacity="0.55" strokeWidth={geo.R * 0.05} />
               </g>
 

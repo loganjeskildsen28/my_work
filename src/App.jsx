@@ -126,19 +126,16 @@ export default function App() {
             Wikipedia, through the MediaWiki API, provides quantifiable daily pageviews for every
             article in each opponent&rsquo;s culture, history, and society subcategories, along
             with the country main page and national football team page. Google Trends discloses
-            only the proportion of searches over time, so search interest for cultural keywords
-            (<em>{'{country}'} history, culture</em>) versus match keywords (<em>{'{country}'}{' '}
-            World Cup, soccer</em>) was compared across the eleven host cities, with Chicago as a
-            non-host control.
+            only the proportion of searches over time, so search interest for cultural versus
+            match keywords was compared across the eleven host cities, with Chicago as a non-host
+            control.
           </p>
           <div className="table-wrap">
             <table className="datatable">
-              <caption>Table 2. Google Trends queried host cities, geo codes, and cultural keywords.</caption>
               <thead>
                 <tr>
                   <th scope="col">Host city</th>
                   <th scope="col">Geo code</th>
-                  <th scope="col">Cultural keywords</th>
                 </tr>
               </thead>
               <tbody>
@@ -159,9 +156,28 @@ export default function App() {
                   <tr key={geo}>
                     <td>{city}</td>
                     <td><code>{geo}</code></td>
-                    <td>{'{country}'} history · {'{country}'} culture</td>
                   </tr>
                 ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="table-wrap">
+            <table className="datatable">
+              <thead>
+                <tr>
+                  <th scope="col">Cultural keywords</th>
+                  <th scope="col">Match keywords</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{'{country}'} history</td>
+                  <td>{'{country}'} World Cup</td>
+                </tr>
+                <tr>
+                  <td>{'{country}'} culture</td>
+                  <td>{'{country}'} soccer</td>
+                </tr>
               </tbody>
             </table>
           </div>
