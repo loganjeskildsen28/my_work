@@ -63,7 +63,7 @@
   --acc-malachite: #45b57c;
   --acc-copper: #d98d4a;
   --acc-champagne: #ead9a8;
-  --trophy-w: min(98vw, 1620px);
+  --trophy-w: min(96vw, 1070px);
   --gutter: clamp(18px, 4vw, 64px);
   --display: 'FWC26 Ultra Condensed', 'Arial Narrow', Impact, sans-serif;
   --body: 'FWC26', 'Helvetica Neue', Arial, sans-serif;

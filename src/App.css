@@ -162,7 +162,8 @@
 }
 
 .section-content {
-  width: min(100%, 610px);
+  /* quarter inch (~24px) of trophy visible beyond the box at the skinniest stem (0.6 * trophy width) */
+  width: min(100%, calc(var(--trophy-w) * 0.6 - 24px));
   background: rgba(10, 7, 2, 0.84);
   border: 1px solid rgba(244, 200, 75, 0.28);
   border-radius: 18px;
@@ -486,12 +487,12 @@
 }
 
 .takeaway-list li::before {
-  content: '★';
+  content: '⚽';
   position: absolute;
-  left: 16px;
-  top: 13px;
-  color: var(--accent, var(--t-purple));
-  font-size: 17px;
+  left: 14px;
+  top: 14px;
+  font-size: 16px;
+  line-height: 1;
 }
 
 /* footer, over the base of the trophy */

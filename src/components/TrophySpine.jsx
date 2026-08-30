@@ -117,25 +117,27 @@ function edgeFlags(geo, W, H) {
 }
 
 // Orbit of the soccer ball: an ellipse around the globe with its low point
-// (periapsis) dropped below the globe so it clears the hero text.
-function orbitParams(geo) {
+// (periapsis) dropped below the globe so it clears the hero text. The
+// horizontal radius is clamped so the ball never leaves the page edges.
+function orbitParams(geo, viewportW, ballSize) {
+  const maxRx = Math.max(geo.R * 0.6, viewportW / 2 - ballSize * 0.6 - 12)
   return {
-    rx: geo.R * 1.35,
+    rx: Math.min(geo.R * 1.35, maxRx),
     ry: geo.R * 0.55,
     yc: geo.cy + geo.R * 0.18,
   }
 }
 
-function orbitPath(geo) {
-  const { rx, ry, yc } = orbitParams(geo)
+function orbitPath(geo, orb) {
+  const { rx, ry, yc } = orb
   return `M ${geo.cx} ${yc + ry} A ${rx} ${ry} 0 1 1 ${geo.cx} ${yc - ry} A ${rx} ${ry} 0 1 1 ${geo.cx} ${yc + ry} Z`
 }
 
 // CSS offset-distance is measured by arc length, not angle, so the fractions
 // of the cycle where the ball sits behind the globe must be computed
 // numerically for the depth/occlusion keyframes to line up with the path.
-function depthKeyframes(geo) {
-  const { rx, ry, yc } = orbitParams(geo)
+function depthKeyframes(geo, orb) {
+  const { rx, ry, yc } = orb
   const N = 720
   const pts = []
   for (let i = 0; i <= N; i++) {
@@ -224,6 +226,7 @@ function SoccerBall({ size }) {
 export default function TrophySpine() {
   const ref = useRef(null)
   const [size, setSize] = useState({ w: 0, h: 0 })
+  const [vw, setVw] = useState(() => (typeof window === 'undefined' ? 0 : window.innerWidth))
 
   useEffect(() => {
     const el = ref.current
@@ -233,7 +236,12 @@ export default function TrophySpine() {
       setSize((s) => (s.w === r.width && s.h === r.height ? s : { w: r.width, h: r.height }))
     })
     ro.observe(el)
-    return () => ro.disconnect()
+    const onResize = () => setVw(window.innerWidth)
+    window.addEventListener('resize', onResize)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', onResize)
+    }
   }, [])
 
   const { w: W, h: H } = size
@@ -243,15 +251,15 @@ export default function TrophySpine() {
   const flags = ready ? edgeFlags(geo, W, H) : []
 
   const ballSize = ready ? Math.max(38, Math.min(90, W * 0.065)) : 0
-  const orbit = ready ? orbitPath(geo) : ''
-  const orbitEl = ready ? orbitParams(geo) : null
+  const orbitEl = ready ? orbitParams(geo, vw || W, ballSize) : null
+  const orbit = ready ? orbitPath(geo, orbitEl) : ''
 
   return (
     <div className="trophy-spine" aria-hidden="true">
       <div className="trophy-spine-inner" ref={ref}>
         {ready && (
           <>
-            <style>{depthKeyframes(geo)}</style>
+            <style>{depthKeyframes(geo, orbitEl)}</style>
             <svg width={W} height={H} className="trophy-svg">
               <defs>
                 <linearGradient id="gold-v" x1="0" y1="0" x2="0" y2="1">

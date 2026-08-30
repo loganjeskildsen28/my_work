@@ -6,10 +6,11 @@ import fig2 from '../assets/figures/fig2-subcategory.png'
 import fig3 from '../assets/figures/fig3-articles.png'
 import fig4 from '../assets/figures/fig4-cities.png'
 
-export function PaperFigure({ src, alt, caption }) {
+// Explicit aspect ratios reserve layout space before the images load.
+export function PaperFigure({ src, alt, caption, ratio }) {
   return (
     <figure className="paperfig">
-      <img src={src} alt={alt} loading="lazy" />
+      <img src={src} alt={alt} loading="lazy" style={{ aspectRatio: ratio }} />
       <figcaption>{caption}</figcaption>
     </figure>
   )
@@ -39,7 +40,7 @@ export function Fig1Toggle() {
           </button>
         ))}
       </div>
-      <img src={active.src} alt={active.alt} />
+      <img src={active.src} alt={active.alt} style={{ aspectRatio: '1500 / 1550' }} />
       <figcaption>
         <strong>Fig. 1.</strong> Ratio of Wikipedia pageviews to baseline for each country the
         U.S. played, 05/26 to 08/20/2026. The dotted red line marks the match date and the dashed
@@ -54,6 +55,7 @@ export function Fig2() {
   return (
     <PaperFigure
       src={fig2}
+      ratio="1500 / 1071"
       alt="Proportion of excess pageviews above baseline by culture, history, and society subcategories for each country"
       caption={
         <>
@@ -69,6 +71,7 @@ export function Fig3() {
   return (
     <PaperFigure
       src={fig3}
+      ratio="777 / 389"
       alt="Articles with the largest share of post-match excess views for each country, from History of Bosnia and Herzegovina to Manneken Pis"
       caption={
         <>
@@ -84,6 +87,7 @@ export function Fig4() {
   return (
     <PaperFigure
       src={fig4}
+      ratio="1500 / 1414"
       alt="Logarithmically scaled weekly Google search proportions for match versus cultural keywords across the 11 host cities and Chicago"
       caption={
         <>

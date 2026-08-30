@@ -83,7 +83,7 @@ export default function App() {
         </section>
 
         <Section id="question" index={1} accent="var(--acc-gold)" kicker="Guiding Question"
-          title="How effective is the World Cup at creating lasting cultural links?">
+          title="How effective is the World Cup at creating lasting cultural engagement?">
           <p>
             From a sea of Norwegians rowing in Times Square to thirsty Scots drinking Boston bars
             dry, the 2026 World Cup brought global competition and culture to the United States.
@@ -98,7 +98,8 @@ export default function App() {
           </p>
           <blockquote className="pull">
             In the age of low attention spans and news cycles that give whiplash, how effective is
-            the World Cup at creating lasting cultural links between individuals?
+            the World Cup at creating Americans&rsquo; lasting cultural engagement with other
+            countries?
           </blockquote>
           <div className="stat-grid">
             <div className="stat"><span className="stat-num">48</span><span className="stat-label">nations</span></div>
@@ -202,7 +203,7 @@ export default function App() {
         </Section>
 
         <Section id="result-2" index={4} accent="var(--acc-gold)" kicker="Results · II of III"
-          title="Histories of unfamiliar countries, quirks of familiar ones.">
+          title="Histories of unfamiliar countries, cultural icons of familiar ones.">
           <p>
             Americans engaged most with the culture of Australia (91.9%) and Belgium (37.4%) but
             the history of Bosnia and Herzegovina (78.8%), Turkey (73.3%), and Paraguay (58.8%).
@@ -212,14 +213,14 @@ export default function App() {
           <Fig2 />
           <p>
             The top articles repeat the pattern: History of Bosnia and Herzegovina (73.5%) and
-            History of Paraguay (58.9%) against quirkier cultural results like Vegemite (63.5%)
-            and Manneken Pis (23.4%).
+            History of Paraguay (58.9%) against cultural icons like Vegemite (63.5%) and
+            Manneken Pis (23.4%).
           </p>
           <Fig3 />
         </Section>
 
         <Section id="result-3" index={4} accent="var(--acc-gold)" kicker="Results · III of III"
-          title="Match interest died with the tournament; cultural interest lingered.">
+          title="Match interest died with the tournament; cultural interest lingered in cities with high immigrant populations.">
           <p>
             Host-city search trends largely corroborated the Wikipedia data (r ≈ 0.86). After the
             tournament, most match interest waned to zero, whereas residual cultural engagement
