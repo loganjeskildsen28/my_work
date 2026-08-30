@@ -30,7 +30,8 @@ function useReveal() {
           io.disconnect()
         }
       },
-      { threshold: 0.1, rootMargin: '0px 0px -6% 0px' },
+      // fire once a quarter inch (~24px) of the box has scrolled into view
+      { threshold: 0, rootMargin: '0px 0px -24px 0px' },
     )
     io.observe(el)
     return () => io.disconnect()
