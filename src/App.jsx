@@ -98,14 +98,13 @@ export default function App() {
           </p>
           <blockquote className="pull">
             In the age of low attention spans and news cycles that give whiplash, how effective is
-            the World Cup at creating Americans&rsquo; lasting cultural engagement with other
-            countries?
+            the World Cup at prompting Americans to engage culturally with other countries?
           </blockquote>
           <div className="stat-grid">
             <div className="stat"><span className="stat-num">48</span><span className="stat-label">nations</span></div>
             <div className="stat"><span className="stat-num">6.8M</span><span className="stat-label">seats filled</span></div>
             <div className="stat"><span className="stat-num">62.8M</span><span className="stat-label">final viewers</span></div>
-            <div className="stat"><span className="stat-num">135km</span><span className="stat-label">of hot dogs</span></div>
+            <div className="stat"><span className="stat-num">135km</span><span className="stat-label">of hot dogs consumed</span></div>
           </div>
         </Section>
 
@@ -132,6 +131,40 @@ export default function App() {
             World Cup, soccer</em>) was compared across the eleven host cities, with Chicago as a
             non-host control.
           </p>
+          <div className="table-wrap">
+            <table className="datatable">
+              <caption>Table 2. Google Trends queried host cities, geo codes, and cultural keywords.</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Host city</th>
+                  <th scope="col">Geo code</th>
+                  <th scope="col">Cultural keywords</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Atlanta GA', 'US-GA-524'],
+                  ['Boston MA', 'US-MA-506'],
+                  ['Dallas TX', 'US-TX-623'],
+                  ['Houston TX', 'US-TX-618'],
+                  ['Kansas City MO', 'US-MO-616'],
+                  ['Los Angeles CA', 'US-CA-803'],
+                  ['Miami FL', 'US-FL-528'],
+                  ['New York NY', 'US-NY-501'],
+                  ['Philadelphia PA', 'US-PA-504'],
+                  ['San Francisco CA', 'US-CA-807'],
+                  ['Seattle WA', 'US-WA-819'],
+                  ['Chicago IL (control)', 'US-IL-602'],
+                ].map(([city, geo]) => (
+                  <tr key={geo}>
+                    <td>{city}</td>
+                    <td><code>{geo}</code></td>
+                    <td>{'{country}'} history · {'{country}'} culture</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           <div className="datacard-grid">
             <div className="datacard"><code>article_views.csv</code><span>110,164 rows · daily pageviews for all cultural articles</span></div>
             <div className="datacard"><code>football_views.csv</code><span>480 rows · national football team pages</span></div>
@@ -173,7 +206,7 @@ export default function App() {
         </Section>
 
         <Section id="result" index={4} accent="var(--acc-gold)" kicker="Results · I of III"
-          title="Pageviews spiked up to 51.5 times above baseline, then decayed within a day.">
+          title="Pageviews spiked several times above baseline, then decayed within a day.">
           <p>
             Wikipedia pageviews on each country&rsquo;s main page rose 1.9 to 51.5 times above
             baseline after a matchup, with an inverse relationship between country size and

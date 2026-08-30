@@ -361,8 +361,26 @@ export default function TrophySpine() {
                   opacity="0.14"
                   filter="url(#soft-blur)"
                 />
+                {/* graticule: faint latitude and meridian lines */}
+                <g stroke="#6d4c12" strokeOpacity="0.35" fill="none" strokeWidth={geo.R * 0.014}>
+                  {[-0.55, -0.2, 0.15, 0.5].map((f) => {
+                    const chord = Math.sqrt(1 - f * f) * geo.R
+                    const y = geo.cy + f * geo.R
+                    return <path key={f} d={`M ${geo.cx - chord} ${y} Q ${geo.cx} ${y + 0.13 * geo.R} ${geo.cx + chord} ${y}`} />
+                  })}
+                  <path d={`M ${geo.cx} ${geo.cy - geo.R} Q ${geo.cx - 0.5 * geo.R} ${geo.cy} ${geo.cx} ${geo.cy + geo.R}`} />
+                  <path d={`M ${geo.cx} ${geo.cy - geo.R} Q ${geo.cx + 0.5 * geo.R} ${geo.cy} ${geo.cx} ${geo.cy + geo.R}`} />
+                </g>
                 <circle cx={geo.cx} cy={geo.cy} r={geo.R} fill="none" stroke="#503409" strokeOpacity="0.55" strokeWidth={geo.R * 0.05} />
               </g>
+
+              {/* hands gripping the lower globe */}
+              {[-1, 1].map((s) => (
+                <g key={s}>
+                  <circle cx={geo.cx + s * geo.R * 0.66} cy={geo.cy + geo.R * 0.62} r={0.045 * W} fill="#8f6a1f" />
+                  <circle cx={geo.cx + s * geo.R * 0.63} cy={geo.cy + geo.R * 0.59} r={0.028 * W} fill="#b5893a" opacity="0.7" />
+                </g>
+              ))}
 
               <g clipPath="url(#trophy-clip)">
                 {/* shadow cast by the globe onto the shoulders */}
@@ -396,8 +414,31 @@ export default function TrophySpine() {
                 <circle cx={geo.cx} cy={geo.cy + geo.R * 0.94} r={0.075 * W} fill="#b5893a" />
                 <circle cx={geo.cx - 0.02 * W} cy={geo.cy + geo.R * 0.9} r={0.05 * W} fill="#d3ab5c" opacity="0.5" />
 
+                {/* seam where the figure meets the drapery */}
+                <path
+                  d={`M ${geo.cx - 0.3 * W} ${geo.topH} Q ${geo.cx} ${geo.topH + 0.05 * W} ${geo.cx + 0.3 * W} ${geo.topH}`}
+                  stroke="#6d4c12"
+                  strokeOpacity="0.45"
+                  strokeWidth="2.5"
+                  fill="none"
+                />
+
                 {/* fluted shading + fold lines down the stem */}
                 <rect x="0" y={geo.topH} width={W} height={geo.baseTop - geo.topH} fill="url(#flutes)" opacity="0.55" />
+                {[-0.11, 0.005, 0.1].map((dx, i) => (
+                  <path
+                    key={`h${i}`}
+                    d={`M${geo.cx + dx * W} ${geo.topH + 24}
+                        C ${geo.cx + (dx - 0.025) * W} ${geo.topH + (geo.baseTop - geo.topH) * 0.32},
+                          ${geo.cx + (dx + 0.025) * W} ${geo.topH + (geo.baseTop - geo.topH) * 0.68},
+                          ${geo.cx + dx * 0.6 * W} ${geo.baseTop - 8}`}
+                    stroke="#e9c470"
+                    strokeOpacity="0.22"
+                    strokeWidth="2"
+                    fill="none"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                ))}
                 {[-0.16, -0.06, 0.05, 0.15].map((dx, i) => (
                   <path
                     key={i}
@@ -414,7 +455,21 @@ export default function TrophySpine() {
                 ))}
 
                 {/* base: rim, malachite bands with gold separators, plinth */}
+                <text
+                  x={geo.cx}
+                  y={geo.baseTop + geo.baseH * 0.14}
+                  textAnchor="middle"
+                  fill="#6d4c12"
+                  opacity="0.85"
+                  style={{
+                    font: `900 ${Math.max(12, geo.baseH * 0.075)}px 'FWC26 Ultra Condensed', sans-serif`,
+                    letterSpacing: '0.5em',
+                  }}
+                >
+                  2026
+                </text>
                 <rect x="0" y={geo.baseTop + geo.baseH * 0.17} width={W} height={geo.baseH * 0.045} fill="#efd189" opacity="0.7" />
+                <rect x="0" y={geo.baseTop + geo.baseH * 0.218} width={W} height={geo.baseH * 0.008} fill="#503409" opacity="0.5" />
                 <rect x="0" y={geo.baseTop + geo.baseH * 0.275} width={W} height={geo.baseH * 0.006} fill="#f2d488" opacity="0.6" />
                 <rect x="0" y={geo.baseTop + geo.baseH * 0.28} width={W} height={geo.baseH * 0.15} fill="url(#malachite)" />
                 <rect x="0" y={geo.baseTop + geo.baseH * 0.43} width={W} height={geo.baseH * 0.006} fill="#f2d488" opacity="0.6" />
